@@ -36,6 +36,7 @@
      </nav>
      
      <div class="jumbotron main" id="splash"><H2>Trivia Engine</H2><button id="Go">Go</button></div>  
+     
      <div class="jumbotron main container-fluid" id="run" style="display:none">
      <div class="row">
        <div class="col-md-4"><H2>Timer</H2><span id="timer">00:00</span></div>
@@ -53,6 +54,13 @@
         <div class="col-md-4 butsize" id="but4"></div>
      </div>
     </div>
+
+    <div class="jumbotron main container-fluid" id="TriviaOutcome" style="display:none">
+     <div class="row"><div class="col-md-12"><H2 id="outcomeTime"></H2></div></div>       
+     <div class="row"><div class="col-md-12"><H2 id="outcome"></H2></div></div>       
+     <div class="row"><div class="col-md-12"><H2 id="outcomeAnswer"></H2></div></div>     
+    </div>
+    
       <audio controls loop autoplay id="MusicToggle" style="display:none">
         <source src="./assets/noise/NoiseDance.mp3" type="audio/mpeg" autoplay=false id="musicPlayer">
       </audio>

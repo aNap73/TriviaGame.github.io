@@ -1,9 +1,10 @@
 var TriviaGame = {
-  MaxTime: 30000,
-  QuestionTime: 0,
+  MaxTime: 10000,
+  QuestionTime: 0,  
   TransitionTime: 5000,
   QuestionsRight: 0,
   QuestionsWrong: 0,
+  QuestionTimedOut: 0,
   QuestionsLeft: 0,
   CurQuestion: 0,
   GameInterval:"",
@@ -18,6 +19,8 @@ var TriviaGame = {
     TriviaGame.gameMusicPlayer = document.getElementById("MusicToggle");
     $("#splash").show();
     $("#run").hide();
+    $("#TriviaOutcome").hide();
+    
 
     var Qi = new TriviaGame.Question("What was the first console video game that allowed the game to be saved?","The Legend of Zelda",["The Legend of Zelda","Rush In Attack","A Bards Tale","Super Mario Brothers"]);
     TriviaGame.arrQuestion.push(Qi);
@@ -77,12 +80,17 @@ var TriviaGame = {
   start(){
       $("#splash").hide();
       $("#run").show();
+      $("#TriviaOutcome").hide();
+
       $("#timer").text(TriviaGame.timeConverter(TriviaGame.QuestionTime/1000));
       document.getElementById("SFX").play();
       TriviaGame.newquestion();
   },
   newquestion: function (){
     if(TriviaGame.CurQuestion < TriviaGame.arrQuestion.length){
+      $("#splash").hide();
+      $("#TriviaOutcome").hide();      
+      $("#run").show();
       this.QuestionTime = this.MaxTime;
       $("#AskQuestion").text(this.arrQuestion[TriviaGame.CurQuestion].Question);
       
@@ -112,24 +120,49 @@ var TriviaGame = {
       }
 
     }else{
-
+      TriviaGame.gameover();
     }
       
   },
   right: function() {
-    alert('bravo');
+    clearInterval(TriviaGame.GameInterval);
+    $("#TriviaOutcome").show();      
+    $("#run").hide();
+    
+    $("#outcomeTime").text("Correct!!!");
+    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcomeAnswer").text("");
+
+
     this.QuestionsRight ++;
     TriviaGame.CurQuestion++;
-    TriviaGame.newquestion();
+    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   wrong: function () {
-    alert('loser!');
+    clearInterval(TriviaGame.GameInterval);
+    
+    $("#TriviaOutcome").show();      
+    $("#run").hide();
+    
+    $("#outcomeTime").text("Incorrect");
+    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcomeAnswer").text("The correct answer was: " + this.arrQuestion[TriviaGame.CurQuestion].Answer);
+
     this.QuestionsWrong ++;
-    TriviaGame.CurQuestion++;
-    TriviaGame.newquestion();
+    TriviaGame.CurQuestion++;    
+    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   gameover: function(){
+    clearInterval(TriviaGame.GameInterval);
+    $("#TriviaOutcome").show();      
+    $("#run").hide();
 
+
+    $("#outcomeTime").text("Game Over");
+    $("#outcome").text("You answered " + this.QuestionsRight + " question(s) out of " + this.arrQuestion.length + " questions, correctly!");
+    $("#outcomeAnswer").text("You didn't answer " + this.QuestionTimedOut + " question(s) and got "+ this.QuestionsWrong +" question(s) wrong.");
+
+    setTimeout(function(){TriviaGame.reset()},TriviaGame.TransitionTime*2);
   },
   tick: function(){
     TriviaGame.QuestionTime -= 1000;
@@ -150,6 +183,17 @@ var TriviaGame = {
   },
   timeout: function() {
     clearInterval(TriviaGame.GameInterval);
+    document.getElementById("SFX").play();
+    $("#TriviaOutcome").show();      
+    $("#run").hide();
+
+    $("#outcomeTime").text("Time Out");
+    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcomeAnswer").text("The correct answer was: " + this.arrQuestion[TriviaGame.CurQuestion].Answer);
+
+    TriviaGame.QuestionTimedOut++;
+    TriviaGame.CurQuestion++;
+    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   gameMusicPlayer:"", 
   gameSFXPlayer:document.getElementById("SFX"),
