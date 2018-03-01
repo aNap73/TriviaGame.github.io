@@ -8,6 +8,7 @@ var TriviaGame = {
   QuestionsLeft: 0,
   CurQuestion: 0,
   GameInterval:"",
+  GameTimeOut:"",
   Question: function (Q, A, C){
     this.Question = Q;
     this.Answer = A;
@@ -15,7 +16,8 @@ var TriviaGame = {
   },
   arrQuestion: [],
   reset: function () {
-  
+    clearTimeout(TriviaGame.GameTimeOut);
+    clearInterval(TriviaGame.GameInterval);
     TriviaGame.gameMusicPlayer = document.getElementById("MusicToggle");
     $("#splash").show();
     $("#run").hide();
@@ -81,13 +83,13 @@ var TriviaGame = {
       $("#splash").hide();
       $("#run").show();
       $("#TriviaOutcome").hide();
-
       $("#timer").text(TriviaGame.timeConverter(TriviaGame.QuestionTime/1000));
       document.getElementById("SFX").play();
       TriviaGame.newquestion();
   },
   newquestion: function (){
     if(TriviaGame.CurQuestion < TriviaGame.arrQuestion.length){
+      $("#timer").text("00:10");
       $("#splash").hide();
       $("#TriviaOutcome").hide();      
       $("#run").show();
@@ -130,13 +132,13 @@ var TriviaGame = {
     $("#run").hide();
     
     $("#outcomeTime").text("Correct!!!");
-    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcome").text("Time Remaining: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
     $("#outcomeAnswer").text("");
 
 
     this.QuestionsRight ++;
     TriviaGame.CurQuestion++;
-    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
+    TriviaGame.GameTimeOut = setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   wrong: function () {
     clearInterval(TriviaGame.GameInterval);
@@ -145,12 +147,12 @@ var TriviaGame = {
     $("#run").hide();
     
     $("#outcomeTime").text("Incorrect");
-    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcome").text("Time Remaining: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
     $("#outcomeAnswer").text("The correct answer was: " + this.arrQuestion[TriviaGame.CurQuestion].Answer);
 
     this.QuestionsWrong ++;
     TriviaGame.CurQuestion++;    
-    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
+    TriviaGame.GameTimeOut = setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   gameover: function(){
     clearInterval(TriviaGame.GameInterval);
@@ -162,7 +164,7 @@ var TriviaGame = {
     $("#outcome").text("You answered " + this.QuestionsRight + " question(s) out of " + this.arrQuestion.length + " questions, correctly!");
     $("#outcomeAnswer").text("You didn't answer " + this.QuestionTimedOut + " question(s) and got "+ this.QuestionsWrong +" question(s) wrong.");
 
-    setTimeout(function(){TriviaGame.reset()},TriviaGame.TransitionTime*2);
+    TriviaGame.GameTimeOut = setTimeout(function(){TriviaGame.reset()},TriviaGame.TransitionTime*2);
   },
   tick: function(){
     TriviaGame.QuestionTime -= 1000;
@@ -188,12 +190,12 @@ var TriviaGame = {
     $("#run").hide();
 
     $("#outcomeTime").text("Time Out");
-    $("#outcome").text("Time Left: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
+    $("#outcome").text("Time Remaining: " + TriviaGame.timeConverter(TriviaGame.QuestionTime/1000) + " seconds") ;
     $("#outcomeAnswer").text("The correct answer was: " + this.arrQuestion[TriviaGame.CurQuestion].Answer);
 
     TriviaGame.QuestionTimedOut++;
     TriviaGame.CurQuestion++;
-    setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
+    TriviaGame.GameTimeOut = setTimeout(function(){TriviaGame.newquestion()},TriviaGame.TransitionTime);
   },
   gameMusicPlayer:"", 
   gameSFXPlayer:document.getElementById("SFX"),

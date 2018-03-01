@@ -8,6 +8,8 @@ body{
 }
 button{
   background-color: black;
+  border-radius: 8%;
+  margin: 1%;
 }
 .navbar{
   background: black;
@@ -37,7 +39,7 @@ button{
 .mymenu{
  padding: 10px; 
  color:#008eff;
- margin-top: 10%;
+ 
 }
 
 .mymenu>a{
@@ -51,20 +53,33 @@ button{
 }
 .main{
   margin:  1.5% auto;
-  padding: 10% 5%;
+  padding: 5% 5%;
   max-width: 90%;
-  min-height:90%;
+  min-height: 80vh;
   border-radius: 3%;
   opacity: .6;
   background: linear-gradient(#008eff,black );
   text-align: center;
-  line-height: 55px;
+  line-height: 50px;
   
 }
-#AskQuestion{
-  
+#timer, #AskQuestion{
+  font-size: 1.8em;
+  margin-bottom: 2%;
 }
-
+#QTitle{
+  margin-bottom: 2%;
+}
+#splashtext{
+  margin: auto auto;
+  padding: 10%;
+}
+#Go{
+  font-size: 1.8em;
+}
+#menubar{
+  margin-top: 2%;
+}
 .ansbutton{
   font-size: 1em;
   line-height: 1.4em;
@@ -73,4 +88,3 @@ button{
   padding: 5% 5%;
   
 }
-
