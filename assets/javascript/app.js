@@ -76,7 +76,7 @@ var TriviaGame = {
     TriviaGame.arrQuestion.push(Qi);
 
     TriviaGame.QuestionsLeft = TriviaGame.arrQuestion.length;
-    CurQuestion = 0;
+    TriviaGame.CurQuestion = 0;
    
   },
   start(){
