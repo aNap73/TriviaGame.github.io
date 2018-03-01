@@ -2,6 +2,7 @@ body{
   background-image: url("../images/Back.gif");
   background-size: cover;  
   background-repeat: no-repeat;
+  
   font-family: 'Press Start 2P', sans-serif;
   color:#66baff;
   font-size: 1.6em;
@@ -18,7 +19,7 @@ button{
  
 }
 .navbar-collapse{
-  width: 30%;
+  width: 50%;
   float: right;
  
 }
